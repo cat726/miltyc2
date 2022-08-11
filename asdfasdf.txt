@@ -1,4 +1,4 @@
-=local UILibrary = loadstring(game:HttpGet("https://pastebin.com/raw/V1ca2q9s"))()
+local UILibrary = loadstring(game:HttpGet("https://pastebin.com/raw/V1ca2q9s"))()
 _G.af = false
 _G.workersfound = false
 local MainUI = UILibrary.Load("-")
