@@ -1,5 +1,6 @@
 local UILibrary = loadstring(game:HttpGet("https://pastebin.com/raw/V1ca2q9s"))()
 _G.af = false
+_G.workersfound = false
 local MainUI = UILibrary.Load("-")
 local FirstPage = MainUI.AddPage("Home")
 
@@ -48,53 +49,56 @@ local function rebirth()
 end
 
 local function workers()
-    for i, v in pairs(tycoonButtons:GetChildren()) do
-        local a = v.Name:split('')
-        local x = true
-        if a[1] ~= 'W' then
-            x = false
+    while _G.workersfound == true do
+        for i, v in pairs(tycoonButtons:GetChildren()) do
+            for c5 = 1, 10, 1 do
+                local w = 'Worker' .. tostring(c5)
+                local bw = 'BunkerWorker' .. tostring(c5)
+                if v.Name == bw then
+                    tycoonBuy:InvokeServer(w)
+                    wait(0.05)
+                    _G.workersfound = true
+                    break
+                else
+                    _G.workersfound = false
+                end
+            end
+            for c = 1, 3, 1 do
+                for c2 = 1, 2, 1 do
+                    local baw = 'Barracks' .. tostring(c) .. 'Worker' .. tostring(c2)
+                    if v.Name == baw then
+                        tycoonBuy:InvokeServer(baw)
+                        wait(0.05)
+                        _G.workersfound = true
+                        break
+                    else
+                        _G.workersfound = false
+                    end
+                end
+            end
+            for c6 = 1, 6, 1 do
+                local buw = 'BunkerWorker' .. tostring(c6)
+                if v.Name == buw then
+                    tycoonBuy:InvokeServer(buw)
+                    wait(0.05)
+                    _G.workersfound = true
+                    break
+                else
+                    _G.workersfound = false
+                end
+            end
         end
-        if a[1] ~= 'B' and a[2] ~= 'u' then
-            x = false
-        end
-        if a[1] ~= 'B' and a[2] ~= 'a' then
-            x = false
-        end
-        if x == false then
-            return
-        end
-    end
-    
-    for c5 = 1, 20, 1 do
-        local w = 'Worker' .. tostring(c5)
-        local bw = 'BunkerWorker' .. tostring(c5)
-        tycoonBuy:InvokeServer(w)
-        wait(0.05)
-    end
-    for c = 1, 3, 1 do
-        for c2 = 1, 2, 1 do
-            local baw = 'Barracks' .. tostring(c) .. 'Worker' .. tostring(c2)
-            tycoonBuy:InvokeServer(baw)
-            wait(0.05)
-        end
-    end
-    for c6 = 1, 10, 1 do
-        local buw = 'BunkerWorker' .. tostring(c6)
-        tycoonBuy:InvokeServer(buw)
-        wait(0.05)
+        wait(5)
+        collect()
     end
 end
 
 local function buyButtons()
     for i, v in pairs(tycoonButtons:GetChildren()) do
-        local success, response = pcall(function()
+        pcall(function()
             tycoonBuy:InvokeServer(tostring(v.Name))
             wait(0.05)
         end)
-        if success then
-            tycoonBuy:InvokeServer(tostring(v.Name))
-            wait(0.05)
-        end
     end
 end
 local function deploySoldiers()
@@ -104,7 +108,7 @@ local function deploySoldiers()
         game:GetService("ReplicatedStorage").Events.Guards.Deploy:FireServer(deployPath.Soldier3)
     end
 end
-
+--[[
 local function round()
     collect()
     workers()
@@ -114,14 +118,13 @@ local function round()
     wait(5)
     rebirth()
     wait(1)
-end
+end]]
 
 local FirstToggle = FirstPage.AddToggle("Auto-farm", false, function(Value)
     _G.af = not _G.af
     while _G.af == true do
         if afcheck() then break end
         collect()
-        workers()
         workers()
         if afcheck() then break end
         wait(5)
@@ -134,5 +137,12 @@ local FirstToggle = FirstPage.AddToggle("Auto-farm", false, function(Value)
         if afcheck() then break end
         rebirth()
         wait(1)
+        wait()
     end
 end)
+
+
+local FirstButton = FirstPage.AddButton("workers", function()
+    workers()
+end)
+
