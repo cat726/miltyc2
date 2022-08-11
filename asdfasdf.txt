@@ -73,7 +73,6 @@ local function workers()
                 wait(0.05)
             end
         end
-        print(v.Name)
     end
 end
 
